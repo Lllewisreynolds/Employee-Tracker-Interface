@@ -4,6 +4,11 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const cTable = require("console.table");
 
+// Global variables declared
+let roleArray = []; 
+let managerArray = [];
+var departmentArray = [];
+
 // Invoking the mysql2 module's native creativeConnection function 
 const connection = mysql.createConnection({
     // Function takes object as argument made up of the configuration details necessary to establish connection
@@ -136,24 +141,21 @@ function insertEmployee() {
   })
  }
 
-
-//   addrole func 
-//   adddepartment func
-
 //   updateemployee func
 
-let roleArray = [];                                            
+// roleChoices, managerChoices & departmentChoices are Helper functions providing data for insertEmployee function to use as choices for prompts
 function roleChoices() {
   connection.query("SELECT * FROM role", function(err, res) {
     if (err) throw err
+    // for loop iterates through query results, extracts data
     for (var i = 0; i < res.length; i++) {
+      // Pushes data to two arrays declared in global scope
       roleArray.push(res[i].title);
     }
   })
   return roleArray;
 }
 
-let managerArray = [];
 function managerChoices() {
   connection.query("SELECT firstName, lastName FROM employees", function(err, res) {
     if (err) throw err
@@ -162,4 +164,84 @@ function managerChoices() {
     }
   })
   return managerArray;
+}
+
+function insertDept() { 
+
+    inquirer.prompt([
+        {
+          name: "name",
+          type: "input",
+          message: "What Department will you add at this time? "
+        },
+        {
+            name: "id",
+            type: "input",
+            message: "Please provide a new Department ID number: "
+          }
+
+    ]).then(function(answers) {
+        connection.query("INSERT INTO department SET ? ",
+            {
+              name: answers.name,
+              id: answers.id
+            },
+            function(err) {
+                if (err) throw err
+                console.table(res);
+                initEmployeeDBPrompt();
+            }
+        )
+    })
+  }
+
+  function insertRole() { 
+    connection.query("SELECT role.title AS Title, role.salary AS Salary FROM role LEFT JOIN department.name AS Department FROM department;",   function(err, res) {
+      inquirer.prompt([
+          {
+            name: "title",
+            type: "input",
+            message: "What is the title of the new role you wish to add?"
+          },
+          {
+            name: "salary",
+            type: "input",
+            message: "What is the associated salary of the position?"
+          } ,
+          {
+            name: "department",
+            type: "rawlist",
+            message: "Please choose which department this role will be assigned to:",
+            choices: departmentChoices()
+          }
+      ]).then(function(answers) {
+          var deptId = departmentChoices().indexOf(answers.choice) + 1
+          connection.query(
+              "INSERT INTO role SET ?",
+              {
+                title: answers.title,
+                salary: answers.salary,
+                departmentID: deptId
+              },
+              function(err) {
+                  if (err) throw err
+                  console.table(answers);
+                  initEmployeeDBPrompt();
+              }
+          )     
+      });
+    });
+};
+
+function departmentChoices() {
+    /* The departmentChoices() works the same as other 2 helper functions: fetchs all department names from the department table,
+       Loops through retrieved data and pushes each department name into an array
+       Then returns the populated departmentArray containing all available departments */
+  connection.query("SELECT * FROM department", function(err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      departmentArray.push(res[i].name);
+    }
+})
+return departmentArray;
 }
