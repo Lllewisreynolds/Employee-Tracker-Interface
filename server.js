@@ -86,10 +86,80 @@ function displayEmployeesByDept() {
       initEmployeeDBPrompt()
     })
   }
-  
+ 
+  // Using inquirer library to gather necessary information for new employee and insert into database
+function insertEmployee() {  
+    inquirer.prompt([
+        {
+          name: "firstName",
+          type: "input",
+          message: "First Name: "
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "Last Name: "
+        },
+        {
+          name: "role",
+          type: "list",
+          message: "What is the new member of staff's job title? ",
+          choices: roleChoices()
+        },
+        {
+            name: "choice",
+            type: "rawlist",
+            message: "Does the new member of staff have a direct manager? If so, please select from the following: ",
+            choices: managerChoices()
+        }
 
-//   addemployee func
+    // Once user answers all prompts, the then function is called to retrieve answers object carrying user input  
+    ]).then(function (answers) {
+    /* roleId and managerId calculated by finding chosen option's index in the respective arrays returned by roleChoices and managerChoices
+     1 added to account for potential zero-based indexing mismatch between Javascript (zero-based) and the potential for the database to use IDs starting with 1 */
+      var roleId = roleChoices().indexOf(answers.role) + 1
+      var managerId = ManagerChoices().indexOf(answers.choice) + 1
+      connection.query("INSERT INTO employees SET ?", 
+      {
+          firstName: answers.firstName,
+          lastName: answers.lastName,
+          managerID: managerId,
+          roleID: roleId
+          
+      }, 
+      function(err){
+          if (err) throw err
+          console.table(answers)
+          initEmployeeDBPrompt()
+      })
+
+  })
+ }
+
+
 //   addrole func 
 //   adddepartment func
 
 //   updateemployee func
+
+let roleArray = [];                                            
+function roleChoices() {
+  connection.query("SELECT * FROM role", function(err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      roleArray.push(res[i].title);
+    }
+  })
+  return roleArray;
+}
+
+let managerArray = [];
+function managerChoices() {
+  connection.query("SELECT firstName, lastName FROM employees", function(err, res) {
+    if (err) throw err
+    for (var i = 0; i < res.length; i++) {
+      managerArray.push(res[i].firstName);
+    }
+  })
+  return managerArray;
+}
