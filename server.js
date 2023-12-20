@@ -39,6 +39,98 @@ const connection = mysql.createConnection({
     initEmployeeDBPrompt();
   });
 
+  /* Main initialising function to begin user prompt
+     Uses switch statements as a means of routing to dedicated functions depending on user input */
+  function initEmployeeDBPrompt() {
+    inquirer.prompt([
+    {
+    type: "list",
+    message: "What would you like to do today?",
+    name: "action",
+    choices: [
+            "View Current Employees", 
+            "View Current Departments",
+            "View Current Roles",
+            "View Current Employees by Department",
+            "Add a New Employee",
+            "Add a New Department",
+            "Add a New Role",
+            "Update Current Employee Role",
+            "Exit"
+            ]
+    }
+]).then(function(answers) {
+        switch (answers.action) {
+
+            case "View Current Employees":
+                displayEmployees();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "View Current Departments":
+                displayDepts();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "View Current Roles":
+                displayRoles();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+                
+            case "View Current Employees by Department":
+                displayEmployeesByDept();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "Add a New Employee":
+                insertEmployee();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "Add a New Department":
+                insertDept();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "Add a New Role":
+                insertRole();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "Update Current Employee Role":
+                // As of yet undefined
+                updateExistingEmployeeRole();
+                console.log(
+                    `You chose to ${answers.action.toLowerCase()}. Please proceed with the next steps.`
+                  );
+            break;
+
+            case "Exit":
+                console.log(" /\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
+                console.log("");
+                console.log("          NOW EXITING EMPLOYEE DATABASE          ");
+                console.log("");
+                console.log(" \\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
+                connection.end();
+                break;
+            }
+    })
+};
+
 // Functions defined for viewing employees, department and role tables - querying the database and then displaying that retrieved information in the console
 // Will be called within initEmployeeDBPrompt later
 function displayEmployees() {
@@ -123,7 +215,7 @@ function insertEmployee() {
     /* roleId and managerId calculated by finding chosen option's index in the respective arrays returned by roleChoices and managerChoices
      1 added to account for potential zero-based indexing mismatch between Javascript (zero-based) and the potential for the database to use IDs starting with 1 */
       var roleId = roleChoices().indexOf(answers.role) + 1
-      var managerId = ManagerChoices().indexOf(answers.choice) + 1
+      var managerId = managerChoices().indexOf(answers.choice) + 1
       connection.query("INSERT INTO employees SET ?", 
       {
           firstName: answers.firstName,
@@ -141,7 +233,7 @@ function insertEmployee() {
   })
  }
 
-//   updateemployee func
+//   updateExistingEmployeeRole func
 
 // roleChoices, managerChoices & departmentChoices are Helper functions providing data for insertEmployee function to use as choices for prompts
 function roleChoices() {
