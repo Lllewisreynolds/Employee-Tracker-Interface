@@ -74,3 +74,22 @@ function displayRoles() {
       initEmployeeDBPrompt()
   })
 }
+
+function displayEmployeesByDept() {
+    connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, department.name AS Department FROM employees JOIN role ON employees.roleID = role.id JOIN department ON role.departmentID = department.id ORDER BY department.id;", 
+    function(err, res) {
+      if (err) throw err
+      console.log ("");
+      console.log(("\x1b[33m          **  EMPLOYEES LISTED BY DEPARTMENT  **          \x1b[0m"))
+      console.log ("");
+      console.table(res)
+      initEmployeeDBPrompt()
+    })
+  }
+  
+
+//   addemployee func
+//   addrole func 
+//   adddepartment func
+
+//   updateemployee func
