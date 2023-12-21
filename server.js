@@ -366,7 +366,7 @@ function updateExistingEmployeeRole() {
             ]).then(function (answers) {
                 // Updating the employee's role in the database based on their choices
                 var roleId = roleChoices().indexOf(answers.role) + 1;
-                connection.query("UPDATE employee SET roleID = ? WHERE lastName = ?",
+                connection.query("UPDATE employees SET WHERE ?",
                     {
                         lastName: answers.lastName,
                         roleID: roleId

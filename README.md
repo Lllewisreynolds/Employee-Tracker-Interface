@@ -8,8 +8,6 @@ It is not uncommon for developers to be asked to create interfaces that make it 
 
 With this in mind, this backend application functions as a Content Management System solution for managing a company's employees through the use of Node.js, MySQL database and the Inquirer npm library.
 
-This application at the point of final submission deadline does not have full functionality - areas surrounding Employee information (displaying Employees, displaying Employees by Department or Updating an existing employee's role) do not currently work as intended. I have currently hit a wall in my attempts to debug this prior to submission, but intend to return to these issues and fix my code at the earliest opportunity.
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
@@ -95,7 +93,7 @@ npm start
 
 ## Video Walkthrough
 
-[Link to video walkthrough of Employee Tracker ](https://drive.google.com/file/d/18QkeRGEHWhH13Qtn7NsjaUoQbcQjYVM0/view)
+[Link to video walkthrough of Employee Tracker ](https://drive.google.com/file/d/1FGm08jM3s-HVvhp9xjGrw3Yfg8HuOQfc/view)
 
       
 ## Questions
