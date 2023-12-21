@@ -33,7 +33,7 @@ const connection = mysql.createConnection({
     console.clear();
     console.log(" /\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
     console.log("");
-    console.log("          WELCOME TO THE EMPLOYEE DATABASE          ");
+    console.log("    WELCOME TO THE EMPLOYEE DATABASE       ");
     console.log("");
     console.log(" \\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
     initEmployeeDBPrompt();
@@ -121,7 +121,7 @@ const connection = mysql.createConnection({
             case "Exit":
                 console.log(" /\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
                 console.log("");
-                console.log("          NOW EXITING EMPLOYEE DATABASE          ");
+                console.log("    NOW EXITING EMPLOYEE DATABASE       ");
                 console.log("");
                 console.log(" \\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\_/\\");
                 connection.end();

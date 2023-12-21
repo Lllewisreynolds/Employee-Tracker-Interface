@@ -34,5 +34,3 @@ CREATE TABLE role (
 --   Another instance of using a foreign key relationship to ensure data integrity
   departmentID INT
 );
-
--- Add NOT NULL to all other data types or no?
