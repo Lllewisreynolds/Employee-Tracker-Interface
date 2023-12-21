@@ -1,184 +1,111 @@
-# 12 SQL: Employee Tracker
+# Employee Tracker Interface
 
-## Your Task
+  ## Description
 
-Developers frequently have to create interfaces that allow non-developers to easily view and interact with information stored in databases. These interfaces are called **content management systems (CMS)**. Your assignment this week is to build a command-line application from scratch to manage a company's employee database, using Node.js, Inquirer, and MySQL.
+Databases are foundational to full-stack web applications. This week's assignment builds upon our previous studies to add a final element to our stack: the database. MySQL is the most popular SQL database available - the fact that it is still so widely adopted despite being over four decades old speaks to its enduring usefulness. 
 
-Because this Challenge will require the use of the `Inquirer` package, ensure that you install and use Inquirer version 8.2.4. To do so, use the following command in your project folder: `npm i inquirer@8.2.4`.
+It is not uncommon for developers to be asked to create interfaces that make it easy for a layman to view and interact with information stored in databases in an intuitive, user-friendly manner.
 
-Because this application won’t be deployed, you’ll also need to create a walkthrough video that demonstrates its functionality and all of the following acceptance criteria being met. You’ll need to submit a link to the video and add it to the README of your project.
+With this in mind, this backend application functions as a Content Management System solution for managing a company's employees through the use of Node.js, MySQL database and the Inquirer npm library.
 
-## User Story
+This application at the point of final submission deadline does not have full functionality - areas surrounding Employee information (displaying Employees, displaying Employees by Department or Updating an existing employee's role) do not currently work as intended. I have currently hit a wall in my attempts to debug this prior to submission, but intend to return to these issues and fix my code at the earliest opportunity.
 
-```md
-AS A business owner
-I WANT to be able to view and manage the departments, roles, and employees in my company
-SO THAT I can organize and plan my business
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Table of Contents
+  * [Licence](#licence)
+  * [Installation](#installation)
+  * [Screenshots](#screenshots)
+  * [Video Walkthrough](#video-walkthrough)
+  * [Questions](#questions)
+  
+## License
+
+This application has the following licence:
+
+MIT License
+
+[Link to licence](https://opensource.org/licenses/MIT)
+
+## Installation
+    
+  Follow the following steps to properly install this application:
+
+
+  * Node.js must be installed. You can download the installer directly from the [Nodejs website](https://nodejs.org). Alternatively, if you have Homebrew installed as the de facto package manager for macOS, you can simply type:
+
+```bash
+brew install node
 ```
 
-## Acceptance Criteria
+  * Your next step is to initialize a project by creating a package.json file that will keep track of libraries installed for use in your application by adding the installed package's name and version. This is achieved by typing the following in the command line:
 
-```md
-GIVEN a command-line application that accepts user input
-WHEN I start the application
-THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
-WHEN I choose to view all departments
-THEN I am presented with a formatted table showing department names and department ids
-WHEN I choose to view all roles
-THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-WHEN I choose to view all employees
-THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
-WHEN I choose to add a department
-THEN I am prompted to enter the name of the department and that department is added to the database
-WHEN I choose to add a role
-THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-WHEN I choose to add an employee
-THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-WHEN I choose to update an employee role
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
+```bash
+npm init -y
 ```
 
-## Mock-Up
+MySQL must be downloaded and installed also.
+You can download the installer directly from the [MySQL website](https://dev.mysql.com/downloads/installer). Alternatively, if you have Homebrew installed as the de facto package manager for macOS, you can simply type:
 
-The following video shows an example of the application being used from the command line:
+```bash
+brew install mysql
+```
+Proficiency with the MySQL command line prompt is encouraged, but GUI's such as MySQL Workbench can also be used to provide access to the database (I personally used TablePlus during the creation of my application). 
 
-[![A video thumbnail shows the command-line employee management application with a play button overlaying the view.](./Assets/12-sql-homework-video-thumbnail.png)](https://2u-20.wistia.com/medias/2lnle7xnpk)
+We will then connect our Node.js servers to our MySQL databases to perform queries based on client requests and return responses accordingly.
 
-## Getting Started
+  * This command line application makes use of the following two dependencies:
 
-This Challenge will require a video submission. Refer to the [Fullstack Blog Video Submission Guide](https://coding-boot-camp.github.io/full-stack/computer-literacy/video-submission-guide) for additional guidance on creating a video.
+  * Uses the [inquirer package](https://www.npmjs.com/package/express) to prompt and gather input from the user.
 
-You’ll need to use the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to your MySQL database and perform queries, and the [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4) to interact with the user via the command line.
+  * Uses the [mysql2 package](https://www.npmjs.com/package/uuid) as a popular choice for connecting to MySQL databases from Node.js applications due to its access to asynchronous operations.
 
-**Important**: You will be committing a file that contains your database credentials. Make sure that your MySQL password is not used for any other personal accounts, because it will be visible on GitHub. In upcoming lessons, you will learn how to better secure this password, or you can start researching npm packages now that could help you.
+  * Uses the [console.table package](https://www.npmjs.com/package/console.table) for convenience's sake as a means of beautifying how tables present in the terminal.
 
-You might also want to make your queries asynchronous. MySQL2 exposes a `.promise()` function on Connections to upgrade an existing non-Promise connection to use Promises. To learn more and make your queries asynchronous, refer to the [npm documentation on MySQL2](https://www.npmjs.com/package/mysql2).
+  * To install these packages, run the following commands from within the CLI at the root of the application:
 
-Design the database schema as shown in the following image:
+```bash
+npm i inquirer
+```
+```bash
+npm i mysql2
+```
 
-![Database schema includes tables labeled “employee,” role,” and “department.”](./Assets/12-sql-homework-demo-01.png)
+```bash
+npm i console.table
+```
 
-As the image illustrates, your schema should contain the following three tables:
+  * And finally: 
 
-* `department`
+  Please type the following command within the terminal to invoke the application:
 
-    * `id`: `INT PRIMARY KEY`
+```bash
+npm start
+```
 
-    * `name`: `VARCHAR(30)` to hold department name
+## Screenshots
 
-* `role`
+![Initialising Employee Database](./assets/Initialise%20Database.png)
 
-    * `id`: `INT PRIMARY KEY`
+![Example of View List Function (Role)](./assets/Example%20of%20view%20function.png)
 
-    * `title`: `VARCHAR(30)` to hold role title
+![Example of Adding Row Function (Department)](./assets/Add%20function.png)
 
-    * `salary`: `DECIMAL` to hold role salary
+![Example of Successful Data Insertion (Department)](./Assets/New%20Insertion.png)
 
-    * `department_id`: `INT` to hold reference to department role belongs to
+## Video Walkthrough
 
-* `employee`
+[Link to video walkthrough of Employee Tracker ](https://drive.google.com/file/d/18QkeRGEHWhH13Qtn7NsjaUoQbcQjYVM0/view)
 
-    * `id`: `INT PRIMARY KEY`
+      
+## Questions
+      
+  For further questions:
 
-    * `first_name`: `VARCHAR(30)` to hold employee first name
+  If you have any further questions or feedback at this time regarding the repo or application, my contact info can be found as below.
+  
+  Contact Info:
 
-    * `last_name`: `VARCHAR(30)` to hold employee last name
+  GitHub: [Lllewisreynolds](https://github.com/Lllewisreynolds)
 
-    * `role_id`: `INT` to hold reference to employee role
-
-    * `manager_id`: `INT` to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager)
-
-You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A constructor function or class could be helpful for organizing these. You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
-
-## Bonus
-
-Try to add some additional functionality to your application, such as the ability to do the following:
-
-* Update employee managers.
-
-* View employees by manager.
-
-* View employees by department.
-
-* Delete departments, roles, and employees.
-
-* View the total utilized budget of a department&mdash;in other words, the combined salaries of all employees in that department.
-
-## Grading Requirements
-
-> **Note**: If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count towards your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
-
-This Challenge is graded based on the following criteria:
-
-### Deliverables: 10%
-
-* Your GitHub repository containing your application code.
-
-### Walkthrough Video: 27%
-
-* A walkthrough video that demonstrates the functionality of the employee tracker must be submitted, and a link to the video should be included in your README file.
-
-* The walkthrough video must show all of the technical acceptance criteria being met.
-
-* The walkthrough video must demonstrate how a user would invoke the application from the command line.
-
-* The walkthrough video must demonstrate a functional menu with the options outlined in the acceptance criteria.
-
-### Technical Acceptance Criteria: 40%
-
-* Satisfies all of the preceding acceptance criteria plus the following:
-
-    * Uses the [Inquirer package](https://www.npmjs.com/package/inquirer/v/8.2.4).
-
-    * Uses the [MySQL2 package](https://www.npmjs.com/package/mysql2) to connect to a MySQL database.
-
-* Follows the table schema outlined in the Challenge instructions.
-
-### Repository Quality: 13%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains a high-quality README with description and a link to a walkthrough video.
-
-### Application Quality 10%
-
-* The application user experience is intuitive and easy to navigate.
-
-### Bonus
-
-Fulfilling any of the following can add up to 20 points to your grade. Note that the highest grade you can achieve is still 100:
-
-* Application allows users to update employee managers (2 points).
-
-* Application allows users to view employees by manager (2 points).
-
-* Application allows users to view employees by department (2 points).
-
-* Application allows users to delete departments, roles, and employees (2 points for each).
-
-* Application allows users to view the total utilized budget of a department&mdash;in other words, the combined salaries of all employees in that department (8 points).
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* A walkthrough video demonstrating the functionality of the application.
-
-* The URL of the GitHub repository, with a unique name and a README describing the project.
-
-- - -
-© 2023 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+  Email: [lsreynolds108@gmail.com](mailto:lsreynolds108@gmail.com)

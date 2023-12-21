@@ -136,7 +136,7 @@ function displayEmployees() {
     /* Columns aliased for readability & easy user comprehension in console
     Optional Manager information is left joined on the employees table, where the current employee's managerID is matched with another employee's id
     CONCAT function used to combine manager first and last name into one new 'Manager' Column*/
-    connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.firstName, ' ' ,e.lastName) AS Manager FROM employees INNER JOIN role on role.id = employees.roleID INNER JOIN department on department.id = role.departmentID LEFT JOIN employees e on employees.managerID = e.id;", 
+    connection.query("SELECT employee.firstName AS First_Name, employee.lastName AS Last_Name, role.title AS Title, role.salary AS Salary, department.name AS Department, CONCAT(e.firstName, ' ' ,e.lastName) AS Manager FROM employee INNER JOIN role on role.id = employee.roleID INNER JOIN department on department.id = role.departmentID LEFT JOIN employee e on employee.managerID = e.id;", 
     function(err, res) {
       if (err) throw err
       console.log ("");
@@ -172,7 +172,7 @@ function displayRoles() {
 }
 
 function displayEmployeesByDept() {
-    connection.query("SELECT employees.firstName AS First_Name, employees.lastName AS Last_Name, department.name AS Department FROM employees JOIN role ON employees.roleID = role.id JOIN department ON role.departmentID = department.id ORDER BY department.id;", 
+    connection.query("SELECT employee.firstName AS First_Name, employee.lastName AS Last_Name, department.name AS Department FROM employee JOIN role ON employee.roleID = role.id JOIN department ON role.departmentID = department.id ORDER BY department.id;", 
     function(err, res) {
       if (err) throw err
       console.log ("");
@@ -215,7 +215,7 @@ function insertEmployee() {
      1 added to account for potential zero-based indexing mismatch between Javascript (zero-based) and the potential for the database to use IDs starting with 1 */
       var roleId = roleChoices().indexOf(answers.role) + 1
       var managerId = managerChoices().indexOf(answers.choice) + 1
-      connection.query("INSERT INTO employees SET ?", 
+      connection.query("INSERT INTO employee SET ?", 
       {
           firstName: answers.firstName,
           lastName: answers.lastName,
@@ -248,7 +248,7 @@ function roleChoices() {
 }
 
 function managerChoices() {
-  connection.query("SELECT firstName, lastName FROM employees", function(err, res) {
+  connection.query("SELECT firstName, lastName FROM employee", function(err, res) {
     if (err) throw err
     for (var i = 0; i < res.length; i++) {
       managerArray.push(res[i].firstName);
@@ -277,7 +277,7 @@ function insertDept() {
               name: answers.name,
               id: answers.id
             },
-            function(err) {
+            function(err, res) {
                 if (err) throw err
                 console.table(res);
                 initEmployeeDBPrompt();
@@ -339,7 +339,7 @@ return departmentArray;
 
 // Final helper function - enables user to modify existing employee's job title within the database
 function updateExistingEmployeeRole() {
-    connection.query("SELECT employees.lastName, role.title FROM employees JOIN role ON employees.roleID = role.id;", 
+    connection.query("SELECT employee.lastName, role.title FROM employee JOIN role ON employee.roleID = role.id;", 
     (err, res) => {
             if (err) throw err;
  
@@ -366,7 +366,7 @@ function updateExistingEmployeeRole() {
             ]).then(function (answers) {
                 // Updating the employee's role in the database based on their choices
                 var roleId = roleChoices().indexOf(answers.role) + 1;
-                connection.query("UPDATE employees SET WHERE ?",
+                connection.query("UPDATE employee SET roleID = ? WHERE lastName = ?",
                     {
                         lastName: answers.lastName,
                         roleID: roleId
