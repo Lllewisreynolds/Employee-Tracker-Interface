@@ -85,11 +85,11 @@ npm start
 
 ## Screenshots
 
-![Initialising Employee Database](./assets/Initialise%20Database.png)
+![Initialising Employee Database](./Assets/Initialise%20Database.png)
 
-![Example of View List Function (Role)](./assets/Example%20of%20view%20function.png)
+![Example of View List Function (Role)](./Assets/Example%20of%20view%20function.png)
 
-![Example of Adding Row Function (Department)](./assets/Add%20function.png)
+![Example of Adding Row Function (Department)](./Assets/Add%20function.png)
 
 ![Example of Successful Data Insertion (Department)](./Assets/New%20Insertion.png)
 
